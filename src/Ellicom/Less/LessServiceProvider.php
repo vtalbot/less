@@ -44,7 +44,8 @@ class LessServiceProvider extends ServiceProvider {
             {
                 \Route::get($prefix.$routes.'{file}.'.$ext, function($file) use ($routes)
                 {
-                    return \Less::make($routes.$file);
+                    $less = \Less::make($routes.$file);
+                    return \Response::make($less, 200, array('Content-Type' => 'text/css'));
                 });
             }
         }
