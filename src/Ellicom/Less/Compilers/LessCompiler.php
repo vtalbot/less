@@ -17,7 +17,7 @@ class LessCompiler extends Compiler implements CompilerInterface {
     public function compile($path)
     {
         $less = new \lessc;
-        $contents = $less->compile($this->files->get($path));
+        $contents = $less->compileFile($path);
 
         if ( ! is_null($this->cachePath))
         {
