@@ -42,7 +42,6 @@ class Less implements Renderable {
      * @param  Illuminate\View\Engines\EngineInterface  $engine
      * @param  string  $less
      * @param  string  $path
-     * @param  array   $data
      * @return void
      */
     public function __construct(Environment $environment, EngineInterface $engine, $less, $path)
@@ -109,16 +108,6 @@ class Less implements Renderable {
     public function getName()
     {
         return $this->less;
-    }
-
-    /**
-     * Get the array of LESS data.
-     *
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->data;
     }
 
     /**

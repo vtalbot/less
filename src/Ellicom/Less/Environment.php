@@ -79,52 +79,14 @@ class Environment {
     /**
      * Get a evaluated LESS contents for the given LESS.
      *
-     * @param  string  $view
-     * @param  array   $data
+     * @param  string  $less
      * @return Ellicom\Less\Less
      */
-    public function make($less, array $data = array())
+    public function make($less)
     {
         $path = $this->finder->find($less);
 
-        return new Less($this, $this->getEngineFromPath($path), $less, $path, $data);
-    }
-
-    /**
-     * Get the rendered contents of a partial from a loop
-     *
-     * @param  string  $less
-     * @param  array   $data
-     * @param  string  $iterator
-     * @param  string  $empty
-     * @return string
-     */
-    public function renderEach($less, array $data, $iterator, $empty = 'raw|')
-    {
-        $result = '';
-
-        if (count($data) > 0)
-        {
-            foreach ($data as $key => $value)
-            {
-                $data = array('key' => $key, $iterator => $value);
-
-                $result .= $this->make($less, $data)->render();
-            }
-        }
-        else
-        {
-            if (starts_with($empty, 'raw|'))
-            {
-                $result = substr($empty, 4);
-            }
-            else
-            {
-                $result = $this->make($empty)->render();
-            }
-        }
-
-        return $result;
+        return new Less($this, $this->getEngineFromPath($path), $less, $path);
     }
 
     /**

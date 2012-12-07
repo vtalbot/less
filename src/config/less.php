@@ -22,6 +22,17 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
+    | CSS prefix routes
+    |--------------------------------------------------------------------------
+    | Just the URL, won't be use to find the LESS files.
+    | Example: ellicom.com/css/bootstrap/test.css
+    | will search for bootstrap/test.less
+    */
+
+    'prefix' => 'css/',
+
+    /*
+    |--------------------------------------------------------------------------
     | LESS Routes extensions
     |--------------------------------------------------------------------------
     */

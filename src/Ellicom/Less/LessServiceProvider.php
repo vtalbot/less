@@ -36,11 +36,13 @@ class LessServiceProvider extends ServiceProvider {
     {
         $app = $this->app;
 
+        $prefix = $app['config']['less.prefix'];
+
         foreach ($app['config']['less.routes'] as $routes)
         {
             foreach ($app['config']['less.extensions'] as $ext)
             {
-                \Route::get($routes.'{file}.'.$ext, function($file) use ($routes)
+                \Route::get($prefix.$routes.'{file}.'.$ext, function($file) use ($routes)
                 {
                     return \Less::make($routes.$file);
                 });
