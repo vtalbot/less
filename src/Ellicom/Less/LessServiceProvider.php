@@ -18,11 +18,34 @@ class LessServiceProvider extends ServiceProvider {
      */
     public function register()
     {
+        $this->registerRoutes();
+
         $this->registerEngineResolver();
 
         $this->registerLessFinder();
 
         $this->registerEnvironment();
+    }
+
+    /**
+     * Register routes to catch LESS request.
+     *
+     * @return void
+     */
+    public function registerRoutes()
+    {
+        $app = $this->app;
+
+        foreach ($app['config']['less.routes'] as $routes)
+        {
+            foreach ($app['config']['less.extensions'] as $ext)
+            {
+                \Route::get($routes.'{file}.'.$ext, function($file) use ($routes)
+                {
+                    return \Less::make($routes.$file);
+                });
+            }
+        }
     }
 
     /**
