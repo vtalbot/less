@@ -1,7 +1,7 @@
 {
     "name": "ellicom/less",
-    "description": "LESS compiler for Laravel",
-    "keywords": ["laravel", "less"],
+    "description": "LESS compiler for Laravel 4 (Illuminate)",
+    "keywords": ["laravel", "less", "illuminate"],
     "license": "MIT",
     "authors": [
         {
