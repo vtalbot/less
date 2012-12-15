@@ -18,6 +18,8 @@ class LessServiceProvider extends ServiceProvider {
      */
     public function register()
     {
+        $this->app['config']->package('ellicom/less', 'ellicom/less', 'ellicom/less');
+
         $this->registerRoutes();
 
         $this->registerEngineResolver();
@@ -36,11 +38,11 @@ class LessServiceProvider extends ServiceProvider {
     {
         $app = $this->app;
 
-        $prefix = $app['config']['less.prefix'];
+        $prefix = $app['config']['ellicom/less::prefix'];
 
-        foreach ($app['config']['less.routes'] as $routes)
+        foreach ($app['config']['ellicom/less::routes'] as $routes)
         {
-            foreach ($app['config']['less.extensions'] as $ext)
+            foreach ($app['config']['ellicom/less::extensions'] as $ext)
             {
                 \Route::get($prefix.$routes.'{file}.'.$ext, function($file) use ($routes)
                 {
@@ -107,7 +109,12 @@ class LessServiceProvider extends ServiceProvider {
     {
         $this->app['less.finder'] = $this->app->share(function($app)
         {
-            $paths = $app['config']['less.paths'];
+            $paths = $app['config']['ellicom/less::paths'];
+
+            foreach ($paths as $key => $path)
+            {
+                $paths[$key] = $app['path'].$path;
+            }
 
             return new FileViewFinder($app['files'], $paths, array('less'));
         });
