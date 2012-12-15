@@ -13,10 +13,12 @@ and `'Less' => 'Ellicom\Less\Facades\Less',` to `aliases` in `app/config/app.php
 
 ### Usage
 
-`<link rel="stylesheet" href="css/test.css">`
+    <link rel="stylesheet" href="css/test.css">
 
 If `css/test.css` doesn't exists in the `public` directory, it will search for `test.less` in `app/less` directory.
 If found, compile it if needed and return the result.
+
+    Less::make('file-in-less-directory');
 
 **Note that if you use `@import` and change imported files, they won't mark the requested file has changed and won't be recompile.**
 
