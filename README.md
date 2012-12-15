@@ -4,7 +4,7 @@
 
 ### Installation
 
-Copy `vendor/ellicom/less/src/config/less.php` in `app/config` then edit it for your needs.
+Run `php artisan config:publish ellicom/less`
 
 Add `'Ellicom\Less\LessServiceProvider',` to `providers` in `app/config/app.php`
 and `'Less' => 'Ellicom\Less\Facades\Less',` to `aliases` in `app/config/app.php`
