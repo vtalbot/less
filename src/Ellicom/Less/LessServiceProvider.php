@@ -44,10 +44,21 @@ class LessServiceProvider extends ServiceProvider {
         {
             foreach ($app['config']['ellicom/less::extensions'] as $ext)
             {
-                \Route::get($prefix.$routes.'{file}.'.$ext, function($file) use ($routes)
+                \Route::get($prefix.$routes.'{file}.'.$ext, function($file) use ($routes, $app)
                 {
                     $less = \Less::make($routes.$file);
-                    return \Response::make($less, 200, array('Content-Type' => 'text/css'));
+
+                    $response = \Response::make($less, 200, array('Content-Type' => 'text/css'));
+                    $response->setCache(array('public' => true));
+
+                    if ( ! is_null($app['config']['ellicom/less::expires']))
+                    {
+                        $date = date_create();
+                        $date->add(new \DateInterval('PT'.$app['config']['ellicom/less::expires'].'M'));
+                        $response->setExpires($date);
+                    }
+
+                    return $response;
                 });
             }
         }
