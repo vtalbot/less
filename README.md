@@ -1,8 +1,12 @@
 # LESS Compiler for Laravel 4 (Illuminate)
 
-[![Build Status](https://travis-ci.org/Ellicom/less.png)](https://travis-ci.org/Ellicom/less)
-
 ### Installation
+
+Add to your composer.json those lines
+
+    "require": {
+        "ellicom/less": "1.*"
+    }
 
 Run `php artisan config:publish ellicom/less`
 
@@ -21,7 +25,3 @@ If found, compile it if needed and return the result.
     Less::make('file-in-less-directory');
 
 **Note that if you use `@import` and change imported files, they won't mark the requested file has changed and won't be recompile.**
-
-### Todo
-
-Add tests.
