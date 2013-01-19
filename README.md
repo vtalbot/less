@@ -24,4 +24,8 @@ If found, compile it if needed and return the result.
 
     Less::make('file-in-less-directory');
 
-**Note that if you use `@import` and change imported files, they won't mark the requested file has changed and won't be recompile.**
+### Changelog
+
+#### 1.1.0
+
+- Check if a change has occured in imported less files

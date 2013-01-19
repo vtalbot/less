@@ -59,7 +59,7 @@ class LessServiceProvider extends ServiceProvider {
                     }
 
                     return $response;
-                });
+                })->where('file', '.*');
             }
         }
     }
