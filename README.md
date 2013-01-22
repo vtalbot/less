@@ -5,15 +5,15 @@
 Add to your composer.json those lines
 
     "require": {
-        "ellicom/less": "1.*"
+        "vtalbot/less": "1.*"
     }
 
-Run `php artisan config:publish ellicom/less`
+Run `php artisan config:publish vtalbot/less`
 
-Then edit `config.php` in `app/packages/ellicom/less` to your needs.
+Then edit `config.php` in `app/packages/vtalbot/less` to your needs.
 
-Add `'Ellicom\Less\LessServiceProvider',` to `providers` in `app/config/app.php`
-and `'Less' => 'Ellicom\Less\Facades\Less',` to `aliases` in `app/config/app.php`
+Add `'VTalbot\Less\LessServiceProvider',` to `providers` in `app/config/app.php`
+and `'Less' => 'VTalbot\Less\Facades\Less',` to `aliases` in `app/config/app.php`
 
 ### Usage
 

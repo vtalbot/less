@@ -1,6 +1,6 @@
 <?php
 
-namespace Ellicom\Less\Facades;
+namespace VTalbot\Less\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

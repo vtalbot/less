@@ -1,13 +1,13 @@
 <?php
 
-namespace Ellicom\Less;
+namespace VTalbot\Less;
 
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Engines\CompilerEngine;
 use Illuminate\View\Engines\EngineResolver;
 use Illuminate\View\FileViewFinder;
-use Ellicom\Less\Compilers\LessCompiler;
+use VTalbot\Less\Compilers\LessCompiler;
 
 class LessServiceProvider extends ServiceProvider {
 
@@ -18,7 +18,7 @@ class LessServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app['config']->package('ellicom/less', 'ellicom/less', 'ellicom/less');
+        $this->app['config']->package('vtalbot/less', 'vtalbot/less', 'vtalbot/less');
 
         $this->registerRoutes();
 
@@ -38,11 +38,11 @@ class LessServiceProvider extends ServiceProvider {
     {
         $app = $this->app;
 
-        $prefix = $app['config']['ellicom/less::prefix'];
+        $prefix = $app['config']['vtalbot/less::prefix'];
 
-        foreach ($app['config']['ellicom/less::routes'] as $routes)
+        foreach ($app['config']['vtalbot/less::routes'] as $routes)
         {
-            foreach ($app['config']['ellicom/less::extensions'] as $ext)
+            foreach ($app['config']['vtalbot/less::extensions'] as $ext)
             {
                 \Route::get($prefix.$routes.'{file}.'.$ext, function($file) use ($routes, $app)
                 {
@@ -51,10 +51,10 @@ class LessServiceProvider extends ServiceProvider {
                     $response = \Response::make($less, 200, array('Content-Type' => 'text/css'));
                     $response->setCache(array('public' => true));
 
-                    if ( ! is_null($app['config']['ellicom/less::expires']))
+                    if ( ! is_null($app['config']['vtalbot/less::expires']))
                     {
                         $date = date_create();
-                        $date->add(new \DateInterval('PT'.$app['config']['ellicom/less::expires'].'M'));
+                        $date->add(new \DateInterval('PT'.$app['config']['vtalbot/less::expires'].'M'));
                         $response->setExpires($date);
                     }
 
@@ -120,7 +120,7 @@ class LessServiceProvider extends ServiceProvider {
     {
         $this->app['less.finder'] = $this->app->share(function($app)
         {
-            $paths = $app['config']['ellicom/less::paths'];
+            $paths = $app['config']['vtalbot/less::paths'];
 
             foreach ($paths as $key => $path)
             {

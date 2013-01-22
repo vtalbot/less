@@ -1,6 +1,6 @@
 <?php
 
-namespace Ellicom\Less\Compilers;
+namespace VTalbot\Less\Compilers;
 
 use Illuminate\Filesystem;
 use Illuminate\View\Compilers\Compiler;

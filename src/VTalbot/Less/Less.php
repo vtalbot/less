@@ -1,6 +1,6 @@
 <?php
 
-namespace Ellicom\Less;
+namespace VTalbot\Less;
 
 use Illuminate\View\Engines\EngineInterface;
 use Illuminate\Support\Contracts\RenderableInterface as Renderable;
@@ -10,7 +10,7 @@ class Less implements Renderable {
     /**
      * The LESS environment instance.
      *
-     * @var Ellicom\Less\Environment
+     * @var VTalbot\Less\Environment
      */
     protected $environment;
 
@@ -38,7 +38,7 @@ class Less implements Renderable {
     /**
      * Create a new LESS instance.
      *
-     * @param  Ellicom\Less\Environment  $environment
+     * @param  VTalbot\Less\Environment  $environment
      * @param  Illuminate\View\Engines\EngineInterface  $engine
      * @param  string  $less
      * @param  string  $path
@@ -83,7 +83,7 @@ class Less implements Renderable {
     /**
      * Get the LESS environment instance.
      *
-     * @return Ellicom\Less\Environment
+     * @return VTalbot\Less\Environment
      */
     public function getEnvironment()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ellicom\Less;
+namespace VTalbot\Less;
 
 use Closure;
 use Illuminate\Events\Dispatcher;
@@ -80,7 +80,7 @@ class Environment {
      * Get a evaluated LESS contents for the given LESS.
      *
      * @param  string  $less
-     * @return Ellicom\Less\Less
+     * @return VTalbot\Less\Less
      */
     public function make($less)
     {
