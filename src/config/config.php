@@ -23,14 +23,16 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
-    | CSS prefix routes
+    | CSS prefixes routes
     |--------------------------------------------------------------------------
     | Just the URL, won't be use to find the LESS files.
-    | Example: ellicom.com/css/bootstrap/test.css
+    | Example: example.com/css/bootstrap/test.css
     | will search for bootstrap/test.less
     */
 
-    'prefix' => 'css/',
+    'prefix' => array(
+        'css/',
+    ),
 
     /*
     |--------------------------------------------------------------------------
@@ -44,7 +46,7 @@ return array(
     |--------------------------------------------------------------------------
     | LESS file caching
     |--------------------------------------------------------------------------
-    | Minutes
+    | Minutes or null for not limit (unless changes occured)
     */
 
     'expires' => 1440,

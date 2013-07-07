@@ -2,7 +2,12 @@
 
 namespace VTalbot\Less;
 
-use Illuminate\Support\MessageBag;
+use \Config;
+use \DateInterval;
+use \File;
+use \Less;
+use \Response;
+use \Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Engines\CompilerEngine;
 use Illuminate\View\Engines\EngineResolver;
@@ -18,14 +23,10 @@ class LessServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app['config']->package('vtalbot/less', 'vtalbot/less', 'vtalbot/less');
-
+        $this->package('vtalbot/less');
         $this->registerRoutes();
-
         $this->registerEngineResolver();
-
         $this->registerLessFinder();
-
         $this->registerEnvironment();
     }
 
@@ -36,30 +37,35 @@ class LessServiceProvider extends ServiceProvider {
      */
     public function registerRoutes()
     {
-        $app = $this->app;
+        $prefixes = Config::get('less::prefix');
 
-        $prefix = $app['config']['vtalbot/less::prefix'];
-
-        foreach ($app['config']['vtalbot/less::routes'] as $routes)
+        if ( ! is_array($prefixes))
         {
-            foreach ($app['config']['vtalbot/less::extensions'] as $ext)
+            $prefixes = array($prefixes);
+        }
+
+        foreach (Config::get('less::routes') as $routes)
+        {
+            foreach (Config::get('less::extensions') as $ext)
             {
-                \Route::get($prefix.$routes.'{file}.'.$ext, function($file) use ($routes, $app)
+                foreach ($prefixes as $prefix)
                 {
-                    $less = \Less::make($routes.$file);
-
-                    $response = \Response::make($less, 200, array('Content-Type' => 'text/css'));
-                    $response->setCache(array('public' => true));
-
-                    if ( ! is_null($app['config']['vtalbot/less::expires']))
+                    Route::get($prefix.$routes.'{file}.'.$ext, function($file) use ($routes)
                     {
-                        $date = date_create();
-                        $date->add(new \DateInterval('PT'.$app['config']['vtalbot/less::expires'].'M'));
-                        $response->setExpires($date);
-                    }
+                        $less = Less::make($routes.$file);
+                        $response = Response::make($less, 200, array('Content-Type' => 'text/css'));
+                        $response->setCache(array('public' => true));
 
-                    return $response;
-                })->where('file', '.*');
+                        if ( ! is_null(Config::get('less::expires')))
+                        {
+                            $date = date_create();
+                            $date->add(new DateInterval('PT'.Config::get('less::expires').'M'));
+                            $response->setExpires($date);
+                        }
+
+                        return $response;
+                    })->where('file', '.*');
+                }
             }
         }
     }
@@ -74,16 +80,12 @@ class LessServiceProvider extends ServiceProvider {
         list($me, $app) = array($this, $this->app);
 
         $app['less.engine.resolver'] = $app->share(function($app) use ($me)
-        {
-            $resolver = new EngineResolver;
-
-            foreach (array('less') as $engine)
             {
-                $me->{'register'.ucfirst($engine).'Engine'}($resolver);
-            }
+                $resolver = new EngineResolver;
+                $me->registerLessEngine($resolver);
 
-            return $resolver;
-        });
+                return $resolver;
+            });
     }
 
     /**
@@ -97,18 +99,18 @@ class LessServiceProvider extends ServiceProvider {
         $app = $this->app;
 
         $resolver->register('less', function() use ($app)
-        {
-            $cache = $app['path'].'/storage/less';
-
-            if ( ! $app['files']->isDirectory($cache))
             {
-                $app['files']->makeDirectory($cache);
-            }
+                $cache = storage_path().'/less';
 
-            $compiler = new LessCompiler($app['files'], $cache);
+                if ( ! File::isDirectory($cache))
+                {
+                    File::makeDirectory($cache);
+                }
 
-            return new CompilerEngine($compiler, $app['files']);
-        });
+                $compiler = new LessCompiler(app('files'), $cache);
+
+                return new CompilerEngine($compiler, app('files'));
+            });
     }
 
     /**
@@ -119,16 +121,16 @@ class LessServiceProvider extends ServiceProvider {
     public function registerLessFinder()
     {
         $this->app['less.finder'] = $this->app->share(function($app)
-        {
-            $paths = $app['config']['vtalbot/less::paths'];
-
-            foreach ($paths as $key => $path)
             {
-                $paths[$key] = $app['path'].$path;
-            }
+                $paths = Config::get('less::paths');
 
-            return new FileViewFinder($app['files'], $paths, array('less'));
-        });
+                foreach ($paths as $key => $path)
+                {
+                    $paths[$key] = app_path().$path;
+                }
+
+                return new FileViewFinder(app('files'), $paths, array('less'));
+            });
     }
 
     /**
@@ -141,21 +143,16 @@ class LessServiceProvider extends ServiceProvider {
         $me = $this;
 
         $this->app['less'] = $this->app->share(function($app) use ($me)
-        {
-            $resolver = $app['less.engine.resolver'];
+            {
+                $resolver = $app['less.engine.resolver'];
+                $finder = $app['less.finder'];
+                $events = $app['events'];
+                $environment = new Environment($resolver, $finder, $events);
+                $environment->setContainer($app);
+                $environment->share('app', $app);
 
-            $finder = $app['less.finder'];
-
-            $events = $app['events'];
-
-            $environment = new Environment($resolver, $finder, $events);
-
-            $environment->setContainer($app);
-
-            $environment->share('app', $app);
-
-            return $environment;
-        });
+                return $environment;
+            });
     }
 
 }

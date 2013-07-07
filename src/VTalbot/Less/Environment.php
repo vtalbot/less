@@ -72,7 +72,6 @@ class Environment {
         $this->engines = $engines;
         $this->finder = $finder;
         $this->events = $events;
-
         $this->share('__env', $this);
     }
 

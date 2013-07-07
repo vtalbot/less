@@ -60,11 +60,8 @@ class Less implements Renderable {
     public function render()
     {
         $env = $this->environment;
-
         $env->incrementRender();
-
         $contents = $this->getContents();
-
         $env->decrementRender();
 
         return $contents;
